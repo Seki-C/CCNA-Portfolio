@@ -156,7 +156,7 @@ ssh -T git@github.com
 git remote -v
 
 # リモートURLをSSH形式に変更（ユーザー名は自分のGitHubユーザー名に置き換えてください）
-git remote set-url origin git@github.com:ユーザー名/CCNA-Portfolio.git
+git remote set-url origin git@github.com:Seki-C/CCNA-Portfolio.git
 ```
 
 ### 6. 新しいリポジトリをSSHで接続する場合
