@@ -1,293 +1,259 @@
-# CCNA 実践演習
+# 実践ラボと検証環境
 
-このディレクトリには、CCNA試験の各トピックに対応する実践的な演習が含まれています。これらの演習は、理論的な知識を実践的なスキルに変換し、実際のネットワーク環境での作業に備えるためのものです。
+## 概要
+このディレクトリには、各プロジェクトで実施した実践的なラボ環境の構成、検証手順、テスト結果が含まれています。これらのラボは、設計した内容を実際に検証し、実装前に問題点を発見・解決するために実施しています。また、新しい技術やコンセプトを学習・検証するための環境としても活用しています。
 
-## 演習環境
+## ラボ環境
 
-以下のツールを使用して演習を行うことができます：
+### 仮想ラボ環境
+- **Cisco Packet Tracer**
+  - バージョン: 8.2.0
+  - 用途: 基本的なネットワーク構成の検証、初期プロトタイピング
+  - 特徴: 軽量で迅速にラボを構築可能、基本的なCisco機能をサポート
 
-1. **Cisco Packet Tracer** - Ciscoが提供する無料のネットワークシミュレーションツール
-2. **GNS3** - より高度なネットワークシミュレーションが可能なオープンソースソフトウェア
-3. **EVE-NG** - ネットワーク仮想化プラットフォーム
-4. **実機ラボ** - 可能であれば、実際のCisco機器を使用した演習
+- **GNS3**
+  - バージョン: 2.2.33
+  - 用途: より高度なネットワーク構成の検証、実機に近い環境でのテスト
+  - 特徴: 実際のIOSイメージを使用、より現実的なシミュレーション
 
-## 演習一覧
+- **EVE-NG**
+  - バージョン: 3.0 Community Edition
+  - 用途: 複雑なマルチベンダー環境の検証、大規模ネットワークのシミュレーション
+  - 特徴: 多様なネットワーク機器をサポート、Webベースのアクセス
 
-### 01 - ネットワーク基礎
+### 物理ラボ環境
+- **Cisco機器**
+  - Cisco 2901 ISRルーター x2
+  - Cisco Catalyst 2960スイッチ x4
+  - Cisco ASA 5505ファイアウォール x1
+  - Cisco Aironet 1142アクセスポイント x2
 
-#### Lab 1-1: 基本的なネットワークコマンド
-- **目的**: 基本的なネットワークコマンドの使用方法を学ぶ
-- **タスク**:
-  - ping、traceroute、ipconfig/ifconfigの使用
-  - ネットワーク接続の確認
-  - ARPテーブルの表示と解析
+- **サーバー環境**
+  - VMware ESXi 7.0ホスト
+  - Ubuntu Server 20.04 LTS VM (自動化サーバー)
+  - Windows Server 2019 VM (Active Directory, DHCP, DNS)
+  - CentOS 8 VM (監視サーバー)
 
-#### Lab 1-2: OSIモデルの実践的理解
-- **目的**: OSIモデルの各層がどのように機能するかを実践的に理解する
-- **タスク**:
-  - Wiresharkを使用したパケットキャプチャ
-  - 各層のヘッダー情報の確認
-  - プロトコルアナライザの使用方法
+## プロジェクト別ラボ構成
 
-#### Lab 1-3: IPv4アドレス計算
-- **目的**: IPv4アドレスとサブネットマスクの計算方法を習得する
-- **タスク**:
-  - サブネット計算（ネットワークアドレス、ブロードキャストアドレス、使用可能なホスト範囲）
-  - VLSM（可変長サブネットマスク）の設計
-  - IPアドレス計画の作成
+### 01 - 小規模オフィスネットワーク構築プロジェクト
 
-#### Lab 1-4: 基本的なネットワークトポロジーの構築
-- **目的**: 基本的なネットワークトポロジーを構築する
-- **タスク**:
-  - スター型トポロジーの構築
-  - ポイントツーポイント接続の設定
-  - 基本的な接続テスト
+#### ラボ環境構成
+- [小規模オフィスラボトポロジー](./01_small_office/topology.png)
+- [機器リスト](./01_small_office/equipment_list.md)
+- [IPアドレス割り当て表](./01_small_office/ip_addressing.md)
 
-### 02 - ネットワークアクセス
+#### 検証シナリオ
+1. [基本接続性テスト](./01_small_office/tests/connectivity_test.md)
+2. [DHCPサービス検証](./01_small_office/tests/dhcp_test.md)
+3. [インターネット接続検証](./01_small_office/tests/internet_test.md)
+4. [無線LAN接続検証](./01_small_office/tests/wireless_test.md)
+5. [障害シミュレーションテスト](./01_small_office/tests/failure_test.md)
 
-#### Lab 2-1: スイッチの基本設定
-- **目的**: Ciscoスイッチの基本設定方法を学ぶ
-- **タスク**:
-  - 初期設定（ホスト名、パスワード、管理IPアドレス）
-  - インターフェース設定
-  - MACアドレステーブルの確認
+#### 設定ファイル
+- [ルーター設定](./01_small_office/configs/router.txt)
+- [スイッチ設定](./01_small_office/configs/switch.txt)
+- [ファイアウォール設定](./01_small_office/configs/firewall.txt)
+- [無線LANコントローラ設定](./01_small_office/configs/wlc.txt)
 
-#### Lab 2-2: VLANとトランキングの設定
-- **目的**: VLANとトランキングの設定方法を習得する
-- **タスク**:
-  - VLANの作成と割り当て
-  - トランクポートの設定
-  - VLANルーティングの設定
+#### 検証結果
+- [テスト結果サマリー](./01_small_office/results/test_summary.md)
+- [パフォーマンス測定結果](./01_small_office/results/performance.md)
+- [問題点と解決策](./01_small_office/results/issues_solutions.md)
 
-#### Lab 2-3: スパニングツリープロトコルの設定
-- **目的**: STPの動作と設定方法を理解する
-- **タスク**:
-  - STPの基本設定
-  - ルートブリッジの設定
-  - PortFastとBPDUガードの設定
-  - STPの動作確認
+### 02 - 企業VLAN環境構築プロジェクト
 
-#### Lab 2-4: EtherChannelの設定
-- **目的**: EtherChannelの設定方法を学ぶ
-- **タスク**:
-  - PAgPを使用したEtherChannelの設定
-  - LACPを使用したEtherChannelの設定
-  - ロードバランシングの設定
-  - EtherChannelの確認
+#### ラボ環境構成
+- [企業VLAN環境ラボトポロジー](./02_vlan_environment/topology.png)
+- [機器リスト](./02_vlan_environment/equipment_list.md)
+- [VLAN設計表](./02_vlan_environment/vlan_design.md)
 
-#### Lab 2-5: 無線LANの設定
-- **目的**: 無線LANの基本設定方法を習得する
-- **タスク**:
-  - アクセスポイントの基本設定
-  - SSIDとセキュリティの設定
-  - クライアント接続の確認
+#### 検証シナリオ
+1. [VLAN接続性テスト](./02_vlan_environment/tests/vlan_connectivity.md)
+2. [トランキング検証](./02_vlan_environment/tests/trunking_test.md)
+3. [スパニングツリー検証](./02_vlan_environment/tests/stp_test.md)
+4. [EtherChannel検証](./02_vlan_environment/tests/etherchannel_test.md)
+5. [VLAN間ルーティング検証](./02_vlan_environment/tests/inter_vlan_routing.md)
+6. [障害シミュレーションテスト](./02_vlan_environment/tests/failure_test.md)
 
-### 03 - IPコネクティビティ
+#### 設定ファイル
+- [コアスイッチ設定](./02_vlan_environment/configs/core_switch.txt)
+- [アクセススイッチ設定](./02_vlan_environment/configs/access_switch.txt)
+- [L3ルーター設定](./02_vlan_environment/configs/router.txt)
 
-#### Lab 3-1: 静的ルーティングの設定
-- **目的**: 静的ルートの設定方法を学ぶ
-- **タスク**:
-  - 標準静的ルートの設定
-  - デフォルトルートの設定
-  - フローティングスタティックルートの設定
-  - ルーティングテーブルの確認
+#### 検証結果
+- [テスト結果サマリー](./02_vlan_environment/results/test_summary.md)
+- [スパニングツリー収束時間測定](./02_vlan_environment/results/stp_convergence.md)
+- [EtherChannelパフォーマンス測定](./02_vlan_environment/results/etherchannel_performance.md)
+- [問題点と解決策](./02_vlan_environment/results/issues_solutions.md)
 
-#### Lab 3-2: OSPFの基本設定
-- **目的**: OSPFの基本設定方法を習得する
-- **タスク**:
-  - シングルエリアOSPFの設定
-  - ルータIDの設定
-  - インターフェースコストの調整
-  - OSPFネイバー関係とルーティングテーブルの確認
+### 03 - 複数拠点接続プロジェクト
 
-#### Lab 3-3: マルチエリアOSPFの設定
-- **目的**: マルチエリアOSPFの設定方法を学ぶ
-- **タスク**:
-  - バックボーンエリアと標準エリアの設定
-  - エリア間ルートの確認
-  - ルート集約の設定
-  - OSPFの最適化
+#### ラボ環境構成
+- [複数拠点ラボトポロジー](./03_multi_site/topology.png)
+- [機器リスト](./03_multi_site/equipment_list.md)
+- [IPアドレス設計表](./03_multi_site/ip_addressing.md)
+- [OSPFエリア設計](./03_multi_site/ospf_areas.md)
 
-#### Lab 3-4: EIGRPの設定
-- **目的**: EIGRPの設定方法を習得する
-- **タスク**:
-  - 基本的なEIGRP設定
-  - 自動集約と手動集約
-  - 帯域幅とディレイの調整
-  - EIGRPネイバー関係とルーティングテーブルの確認
+#### 検証シナリオ
+1. [拠点間接続性テスト](./03_multi_site/tests/inter_site_connectivity.md)
+2. [OSPF隣接関係検証](./03_multi_site/tests/ospf_adjacency.md)
+3. [ルート集約検証](./03_multi_site/tests/route_summarization.md)
+4. [WAN障害シミュレーション](./03_multi_site/tests/wan_failure.md)
+5. [ルーティングコンバージェンステスト](./03_multi_site/tests/routing_convergence.md)
 
-#### Lab 3-5: ルート再配布の設定
-- **目的**: 異なるルーティングプロトコル間のルート再配布を学ぶ
-- **タスク**:
-  - OSPF→EIGRPの再配布
-  - EIGRP→OSPFの再配布
-  - 再配布されたルートのフィルタリング
-  - 再配布の確認
+#### 設定ファイル
+- [本社ルーター設定](./03_multi_site/configs/hq_router.txt)
+- [支社ルーター設定](./03_multi_site/configs/branch_router.txt)
+- [データセンタールーター設定](./03_multi_site/configs/dc_router.txt)
 
-### 04 - IPサービス
+#### 検証結果
+- [テスト結果サマリー](./03_multi_site/results/test_summary.md)
+- [OSPFコンバージェンス時間測定](./03_multi_site/results/ospf_convergence.md)
+- [WAN帯域幅利用率](./03_multi_site/results/wan_bandwidth.md)
+- [問題点と解決策](./03_multi_site/results/issues_solutions.md)
 
-#### Lab 4-1: DHCPの設定
-- **目的**: DHCPサーバーとリレーエージェントの設定方法を学ぶ
-- **タスク**:
-  - ルーターでのDHCPサーバー設定
-  - DHCPスコープとオプションの設定
-  - DHCPリレーエージェントの設定
-  - DHCPの動作確認
+### 04 - ネットワークサービス最適化プロジェクト
 
-#### Lab 4-2: NATの設定
-- **目的**: 様々なNAT設定方法を習得する
-- **タスク**:
-  - スタティックNATの設定
-  - ダイナミックNATの設定
-  - PAT（NAT Overload）の設定
-  - NATの確認とトラブルシューティング
+#### ラボ環境構成
+- [ネットワークサービスラボトポロジー](./04_network_services/topology.png)
+- [機器リスト](./04_network_services/equipment_list.md)
+- [サービス設計表](./04_network_services/services_design.md)
 
-#### Lab 4-3: NTPとSyslogの設定
-- **目的**: NTPとSyslogの設定方法を学ぶ
-- **タスク**:
-  - NTPサーバーとクライアントの設定
-  - Syslogサーバーの設定
-  - ログレベルの設定
-  - NTPとSyslogの動作確認
+#### 検証シナリオ
+1. [DHCPサービス検証](./04_network_services/tests/dhcp_test.md)
+2. [NAT/PAT機能検証](./04_network_services/tests/nat_test.md)
+3. [NTP同期検証](./04_network_services/tests/ntp_test.md)
+4. [QoSパフォーマンス検証](./04_network_services/tests/qos_test.md)
+5. [HSRP冗長性検証](./04_network_services/tests/hsrp_test.md)
+6. [サービス障害シミュレーション](./04_network_services/tests/service_failure.md)
 
-#### Lab 4-4: HSRPの設定
-- **目的**: HSRPの設定方法を習得する
-- **タスク**:
-  - 基本的なHSRP設定
-  - プライオリティとプリエンプションの設定
-  - インターフェーストラッキングの設定
-  - HSRPの動作確認
+#### 設定ファイル
+- [DHCPサーバー設定](./04_network_services/configs/dhcp_server.txt)
+- [NAT/PATルーター設定](./04_network_services/configs/nat_router.txt)
+- [NTPサーバー設定](./04_network_services/configs/ntp_server.txt)
+- [QoS設定](./04_network_services/configs/qos_config.txt)
+- [HSRP設定](./04_network_services/configs/hsrp_config.txt)
 
-#### Lab 4-5: QoSの基本設定
-- **目的**: QoSの基本設定方法を学ぶ
-- **タスク**:
-  - トラフィックの分類とマーキング
-  - キューイングの設定
-  - ポリシングとシェーピングの設定
-  - QoSの確認
+#### 検証結果
+- [テスト結果サマリー](./04_network_services/results/test_summary.md)
+- [QoSパフォーマンス測定](./04_network_services/results/qos_performance.md)
+- [HSRPフェイルオーバー時間測定](./04_network_services/results/hsrp_failover.md)
+- [問題点と解決策](./04_network_services/results/issues_solutions.md)
 
-### 05 - セキュリティ基礎
+### 05 - セキュアネットワーク構築プロジェクト
 
-#### Lab 5-1: ACLの設定
-- **目的**: 様々なACLの設定方法を習得する
-- **タスク**:
-  - 標準ACLの設定
-  - 拡張ACLの設定
-  - 名前付きACLの設定
-  - ACLの確認とトラブルシューティング
+#### ラボ環境構成
+- [セキュリティラボトポロジー](./05_security/topology.png)
+- [機器リスト](./05_security/equipment_list.md)
+- [セキュリティ設計表](./05_security/security_design.md)
 
-#### Lab 5-2: スイッチセキュリティの設定
-- **目的**: スイッチのセキュリティ機能の設定方法を学ぶ
-- **タスク**:
-  - ポートセキュリティの設定
-  - DHCP Snoopingの設定
-  - ダイナミックARP検査の設定
-  - IPソースガードの設定
+#### 検証シナリオ
+1. [ファイアウォールポリシー検証](./05_security/tests/firewall_policy_test.md)
+2. [ACL機能検証](./05_security/tests/acl_test.md)
+3. [AAA認証検証](./05_security/tests/aaa_test.md)
+4. [802.1X認証検証](./05_security/tests/dot1x_test.md)
+5. [VPN接続検証](./05_security/tests/vpn_test.md)
+6. [侵入検知/防御検証](./05_security/tests/ids_ips_test.md)
+7. [セキュリティ侵害シミュレーション](./05_security/tests/security_breach.md)
 
-#### Lab 5-3: AAAの設定
-- **目的**: AAAの設定方法を習得する
-- **タスク**:
-  - ローカル認証の設定
-  - RADIUS認証の設定
-  - 認可とアカウンティングの設定
-  - AAAの確認
+#### 設定ファイル
+- [ファイアウォール設定](./05_security/configs/firewall.txt)
+- [ACL設定](./05_security/configs/acl_config.txt)
+- [AAAサーバー設定](./05_security/configs/aaa_server.txt)
+- [802.1X設定](./05_security/configs/dot1x_config.txt)
+- [VPN設定](./05_security/configs/vpn_config.txt)
 
-#### Lab 5-4: 無線LANセキュリティの設定
-- **目的**: 無線LANのセキュリティ設定方法を学ぶ
-- **タスク**:
-  - WPA2/WPA3の設定
-  - 802.1X/EAPの設定
-  - ゲストWLANの設定
-  - 無線LANセキュリティの確認
+#### 検証結果
+- [テスト結果サマリー](./05_security/results/test_summary.md)
+- [セキュリティ監査レポート](./05_security/results/security_audit.md)
+- [侵入テスト結果](./05_security/results/penetration_test.md)
+- [問題点と解決策](./05_security/results/issues_solutions.md)
 
-#### Lab 5-5: サイト間VPNの設定
-- **目的**: サイト間IPsec VPNの設定方法を習得する
-- **タスク**:
-  - IKEフェーズ1とフェーズ2の設定
-  - 暗号化とハッシュアルゴリズムの設定
-  - VPNトラフィックの定義
-  - VPNの確認とトラブルシューティング
+### 06 - ネットワーク自動化プロジェクト
 
-### 06 - 自動化とプログラマビリティ
+#### ラボ環境構成
+- [自動化ラボトポロジー](./06_automation/topology.png)
+- [機器リスト](./06_automation/equipment_list.md)
+- [自動化プラットフォーム構成](./06_automation/platform_setup.md)
 
-#### Lab 6-1: Python基礎
-- **目的**: ネットワーク自動化のためのPython基礎を学ぶ
-- **タスク**:
-  - 基本的なPython構文
-  - データ構造（リスト、辞書、JSON）
-  - ファイル操作
-  - 例外処理
+#### 検証シナリオ
+1. [Pythonスクリプト検証](./06_automation/tests/python_script_test.md)
+2. [API統合検証](./06_automation/tests/api_integration_test.md)
+3. [Ansibleプレイブック検証](./06_automation/tests/ansible_playbook_test.md)
+4. [CI/CDパイプライン検証](./06_automation/tests/cicd_pipeline_test.md)
+5. [設定自動化検証](./06_automation/tests/config_automation_test.md)
+6. [障害検知と自動復旧検証](./06_automation/tests/auto_remediation_test.md)
 
-#### Lab 6-2: REST APIの使用
-- **目的**: REST APIを使用したネットワーク操作を習得する
-- **タスク**:
-  - API認証
-  - GETリクエスト
-  - POST/PUTリクエスト
-  - APIレスポンスの処理
+#### コードとスクリプト
+- [Pythonスクリプト](./06_automation/code/python/)
+- [Ansibleプレイブック](./06_automation/code/ansible/)
+- [API呼び出しスクリプト](./06_automation/code/api_calls/)
+- [CI/CD設定ファイル](./06_automation/code/cicd/)
 
-#### Lab 6-3: Netmikoを使用した自動化
-- **目的**: Netmikoを使用したネットワーク自動化を学ぶ
-- **タスク**:
-  - SSH接続の確立
-  - コマンド実行
-  - 設定の変更
-  - 出力の解析
+#### 検証結果
+- [テスト結果サマリー](./06_automation/results/test_summary.md)
+- [自動化効率測定](./06_automation/results/automation_efficiency.md)
+- [エラー処理検証結果](./06_automation/results/error_handling.md)
+- [問題点と解決策](./06_automation/results/issues_solutions.md)
 
-#### Lab 6-4: Ansibleを使用した設定管理
-- **目的**: Ansibleを使用したネットワーク設定管理を習得する
-- **タスク**:
-  - インベントリの作成
-  - プレイブックの作成
-  - モジュールの使用
-  - 設定のバックアップと復元
+## ラボ実施のベストプラクティス
 
-#### Lab 6-5: YANG/NETCONF/RESTCONFの基本
-- **目的**: YANG/NETCONF/RESTCONFの基本を学ぶ
-- **タスク**:
-  - YANGモデルの理解
-  - NETCONFクライアントの使用
-  - RESTCONFリクエストの送信
-  - データモデルの操作
+### ラボ環境の準備
+1. **明確な目標設定**
+   - 検証する機能や設定を明確に定義
+   - 成功基準を事前に設定
 
-## 演習の進め方
+2. **適切なツールの選択**
+   - 検証内容に適したシミュレーションツールを選択
+   - 必要に応じて物理機器と仮想環境を組み合わせる
 
-1. 各演習の「目的」と「タスク」を確認する
-2. 必要な環境（Packet Tracer、GNS3など）を準備する
-3. 演習を実施し、各タスクを完了する
-4. 結果を検証し、理解度を確認する
-5. 学習した内容を記録し、`learning_progress.md`ファイルに進捗を更新する
+3. **ドキュメント準備**
+   - ラボトポロジー図の作成
+   - IPアドレス計画の文書化
+   - テスト手順書の準備
 
-## 演習結果の保存
+### テスト実施
+1. **段階的なアプローチ**
+   - 基本機能から順にテスト
+   - 複雑な機能や統合テストは後半で実施
 
-各演習の結果は、以下の形式で保存することをお勧めします：
+2. **詳細な記録**
+   - コマンド出力のキャプチャ
+   - 問題発生時の状況記録
+   - 設定変更の履歴管理
 
-1. トポロジー図（PNG、JPG、またはPDFファイル）
-2. 設定ファイル（テキストファイル）
-3. 検証結果のスクリーンショット
-4. 学んだことや注意点のメモ
+3. **障害シミュレーション**
+   - 様々な障害シナリオをテスト
+   - 復旧手順の検証
 
-これらのファイルは、対応する演習ディレクトリに保存してください。例えば：
+### 結果分析
+1. **期待値との比較**
+   - テスト結果と期待値の比較
+   - 差異の分析と原因究明
 
-```
-labs/
-  ├── 01-network-fundamentals/
-  │   ├── lab1-1/
-  │   │   ├── topology.png
-  │   │   ├── configs/
-  │   │   ├── screenshots/
-  │   │   └── notes.md
-  │   ├── lab1-2/
-  │   ...
-  ├── 02-network-access/
-  ...
-```
+2. **パフォーマンス評価**
+   - レイテンシ、スループット、コンバージェンス時間などの測定
+   - ベースラインとの比較
+
+3. **改善点の特定**
+   - 設計や設定の最適化ポイントの特定
+   - 追加テストの必要性の評価
+
+## ラボ環境のセットアップガイド
+
+- [Packet Tracerセットアップガイド](./setup_guides/packet_tracer_setup.md)
+- [GNS3セットアップガイド](./setup_guides/gns3_setup.md)
+- [EVE-NGセットアップガイド](./setup_guides/eve_ng_setup.md)
+- [物理ラボセットアップガイド](./setup_guides/physical_lab_setup.md)
+- [自動化環境セットアップガイド](./setup_guides/automation_env_setup.md)
 
 ## 参考リソース
 
-- Cisco Learning Network
-- Cisco Packet Tracer Labs
-- GNS3 Labs
-- David Bombal's CCNA Labs
-- Jeremy's IT Lab
-- Keith Barker's Labs
+- [Cisco DevNet Sandbox](https://developer.cisco.com/site/sandbox/)
+- [GNS3 Academy](https://academy.gns3.com/)
+- [EVE-NG Community](https://www.eve-ng.net/index.php/community/)
+- [Cisco Learning Network Labs](https://learningnetwork.cisco.com/s/learning-labs)
+- [David Bombal's YouTube Channel](https://www.youtube.com/c/DavidBombal)
+- [Network Lessons](https://networklessons.com/)
+- [INE Labs](https://ine.com/)

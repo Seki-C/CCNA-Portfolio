@@ -1,121 +1,154 @@
-# IPコネクティビティ
+# 複数拠点接続プロジェクト
 
-## 概要
-IPコネクティビティは、ネットワーク層（Layer 3）での接続性に焦点を当てています。このセクションでは、ルーティングの基本概念、IPアドレッシング、サブネット化、ルーティングプロトコルについて学びます。
+## プロジェクト概要
+全国に3拠点（本社、支社、データセンター）を持つ企業のネットワーク接続を設計・構築するプロジェクトです。このプロジェクトでは、ルーティングプロトコル（OSPF、EIGRP）を活用して、拠点間の効率的で冗長性のある接続を実現します。また、IPアドレス設計、サブネット化、ルートの集約など、IPコネクティビティに関する重要な技術を実践します。
 
-## 学習トピック
+## ビジネス要件
 
-### 1. ルーティングの基礎
-- **ルーターの機能と役割**
-- **ルーティングとスイッチングの違い**
-- **パケット転送プロセス**
-- **ルーティングテーブル**
-  - 宛先ネットワーク
-  - ネクストホップ
-  - 出力インターフェース
-  - メトリック
-  - アドミニストレーティブディスタンス
-- **最長プレフィックスマッチング**
+### クライアント情報
+- **会社名**: テクノソリューション株式会社
+- **業種**: ITサービス
+- **拠点情報**:
+  - 本社（東京）: 従業員150名
+  - 支社（大阪）: 従業員50名
+  - データセンター（埼玉）: サーバー環境、管理者5名
 
-### 2. IPアドレッシングとサブネット化
-- **IPv4アドレスの復習**
-- **サブネット化の概念**
-  - サブネットマスク
-  - プレフィックス長（CIDR表記）
-- **サブネット計算**
-  - ネットワークアドレス
-  - ブロードキャストアドレス
-  - 使用可能なホストアドレス範囲
-  - サブネット数とホスト数の関係
-- **VLSM（Variable Length Subnet Masking）**
-- **サブネット設計の考慮事項**
-- **IPv6サブネット化**
-  - グローバルユニキャストアドレス
-  - ユニークローカルアドレス
-  - プレフィックス長
+### 要件
+1. 3拠点間の安定した接続
+2. 拠点間通信の冗長性確保
+3. 効率的なルーティング
+4. 将来の拡張性を考慮したIPアドレス設計
+5. トラフィック最適化
+6. 障害時の迅速な復旧
+7. 拠点間通信の監視と管理
 
-### 3. 静的ルーティング
-- **静的ルートの概念と用途**
-- **静的ルートの設定**
-  - 標準静的ルート
-  - デフォルトルート
-  - フローティングスタティックルート
-- **静的ルートの確認とトラブルシューティング**
-- **IPv6静的ルーティング**
+## 技術要件
 
-### 4. 動的ルーティングプロトコルの概要
-- **動的ルーティングプロトコルの分類**
-  - IGP（Interior Gateway Protocol）vs EGP（Exterior Gateway Protocol）
-  - ディスタンスベクター vs リンクステート vs ハイブリッド
-  - クラスフル vs クラスレス
-- **ルーティングプロトコルの特性**
-  - コンバージェンス
-  - スケーラビリティ
-  - リソース使用量
-  - 実装と保守の複雑さ
-- **アドミニストレーティブディスタンス**
+### ネットワーク機器
+- **本社**:
+  - エッジルーター: Cisco 4331シリーズ x2
+  - コアスイッチ: Cisco Catalyst 3850シリーズ x2
+- **支社**:
+  - エッジルーター: Cisco 4321シリーズ x2
+  - コアスイッチ: Cisco Catalyst 3650シリーズ x1
+- **データセンター**:
+  - エッジルーター: Cisco 4351シリーズ x2
+  - コアスイッチ: Cisco Nexus 9300シリーズ x2
 
-### 5. OSPF（Open Shortest Path First）
-- **OSPFの概要と特徴**
-  - リンクステートプロトコル
-  - エリア構造
-  - コスト計算
-- **OSPFの動作**
-  - ネイバー関係の確立
-  - データベース同期
-  - SPF（Shortest Path First）アルゴリズム
-  - ルート計算
-- **OSPFの設定**
-  - 基本設定
-  - インターフェース設定
-  - エリア設定
-  - ルータID
-- **OSPFの確認とトラブルシューティング**
-- **OSPFv3（IPv6用OSPF）**
+### ネットワーク設計
+- **WAN接続**:
+  - 本社-支社: 専用線（100Mbps）+ バックアップ回線（50Mbps）
+  - 本社-データセンター: 専用線（1Gbps）+ バックアップ回線（500Mbps）
+  - 支社-データセンター: 専用線（100Mbps）
 
-### 6. EIGRP（Enhanced Interior Gateway Routing Protocol）
-- **EIGRPの概要と特徴**
-  - アドバンストディスタンスベクタープロトコル
-  - DUAL（Diffusing Update Algorithm）
-  - 不等コストロードバランシング
-- **EIGRPの動作**
-  - ネイバー関係の確立
-  - トポロジーテーブル
-  - フィージブルサクセサーとサクセサー
-- **EIGRPの設定**
-  - 基本設定
-  - 自動集約
-  - 手動集約
-  - 帯域幅とディレイの調整
-- **EIGRPの確認とトラブルシューティング**
-- **EIGRP for IPv6**
+- **IPアドレス設計**:
+  - 本社: 10.1.0.0/16
+    - 社内LAN: 10.1.0.0/17
+    - 管理ネットワーク: 10.1.128.0/24
+    - DMZ: 10.1.129.0/24
+    - WAN接続: 10.1.254.0/24
+  - 支社: 10.2.0.0/16
+    - 社内LAN: 10.2.0.0/17
+    - 管理ネットワーク: 10.2.128.0/24
+    - WAN接続: 10.2.254.0/24
+  - データセンター: 10.3.0.0/16
+    - サーバーファーム: 10.3.0.0/17
+    - 管理ネットワーク: 10.3.128.0/24
+    - WAN接続: 10.3.254.0/24
 
-### 7. ルートの再配布と集約
-- **ルート再配布の概念と用途**
-- **ルート再配布の設定**
-- **ルート集約の概念と利点**
-- **ルート集約の設定**
-  - OSPF集約
-  - EIGRP集約
+- **ルーティングプロトコル設計**:
+  - 内部ルーティング: OSPF
+    - エリア0: バックボーン（WAN接続）
+    - エリア1: 本社
+    - エリア2: 支社
+    - エリア3: データセンター
+  - ルート集約の実装
+  - デフォルトルートの配布
 
-## 実践演習
-1. **Packet Tracerを使用したIPアドレス設計とサブネット化**
-2. **静的ルーティングの設定と検証**
-3. **OSPFの設定と検証**
-4. **EIGRPの設定と検証**
-5. **複数のルーティングプロトコルを使用したネットワーク設計**
+## プロジェクト成果物
+
+### 1. ネットワーク設計図
+- [物理トポロジー図](../network_diagrams/03_multi_site_physical.png)
+- [論理トポロジー図](../network_diagrams/03_multi_site_logical.png)
+- [IPアドレス設計図](./design/ip_addressing_scheme.png)
+- [OSPFエリア設計図](./design/ospf_areas.png)
+
+### 2. 機器設定
+- **本社**:
+  - [エッジルーター設定](./configs/hq_edge_router_config.txt)
+  - [コアスイッチ設定](./configs/hq_core_switch_config.txt)
+- **支社**:
+  - [エッジルーター設定](./configs/branch_edge_router_config.txt)
+  - [コアスイッチ設定](./configs/branch_core_switch_config.txt)
+- **データセンター**:
+  - [エッジルーター設定](./configs/dc_edge_router_config.txt)
+  - [コアスイッチ設定](./configs/dc_core_switch_config.txt)
+
+### 3. 実装手順
+- [IPアドレス設計と割り当て手順](./implementation/ip_addressing_implementation.md)
+- [OSPF基本設定手順](./implementation/ospf_basic_setup.md)
+- [OSPFエリア設定手順](./implementation/ospf_area_setup.md)
+- [ルート集約設定手順](./implementation/route_summarization.md)
+- [冗長パス設定手順](./implementation/redundant_paths.md)
+- [デフォルトルート配布手順](./implementation/default_route_distribution.md)
+
+### 4. 検証結果
+- [拠点間接続性テスト結果](./verification/inter_site_connectivity.md)
+- [OSPF隣接関係検証](./verification/ospf_adjacency.md)
+- [ルーティングテーブル検証](./verification/routing_table.md)
+- [フェイルオーバーテスト結果](./verification/failover_test.md)
+- [帯域幅とレイテンシテスト結果](./verification/bandwidth_latency_test.md)
+
+### 5. トラブルシューティング事例
+- [OSPF隣接関係問題の解決](./troubleshooting/ospf_adjacency_issues.md)
+- [ルート再配布問題の解決](./troubleshooting/route_redistribution_issues.md)
+- [WAN接続障害の対応](./troubleshooting/wan_connectivity_issues.md)
+- [サブネット設計ミスの修正](./troubleshooting/subnet_design_correction.md)
+
+## 実装のポイント
+
+### 1. IPアドレス設計のポイント
+- 階層的なアドレス設計による管理性の向上
+- 将来の拡張を考慮したサブネットサイズの決定
+- 効率的なルート集約のためのアドレス割り当て
+- 一貫性のあるアドレス設計方針
+
+### 2. OSPFルーティング設計のポイント
+- 適切なエリア分割によるルーティングテーブルの最適化
+- エリア間のトラフィックフローの考慮
+- バックボーンエリア（エリア0）の適切な設計
+- ルート集約によるルーティングテーブルサイズの削減
+
+### 3. 冗長性設計のポイント
+- 複数のWAN接続による冗長性確保
+- 等コストパスによるロードバランシング
+- 非等コストパスでのバックアップ経路設定
+- 障害検出と迅速な経路切り替え
+
+### 4. パフォーマンス最適化のポイント
+- 最適なパスの選択（コスト設定）
+- 帯域幅に基づいたコスト計算
+- ルート集約によるルーティングアップデートの最適化
+- 効率的なトラフィックエンジニアリング
+
+## 学んだこと
+- 複数拠点ネットワークにおけるルーティング設計の重要性
+- OSPFエリア設計による大規模ネットワークの効率的な管理
+- IPアドレス設計が将来の拡張性と管理性に与える影響
+- 冗長性と最適なパス選択のバランス
+- 実際のネットワーク環境でのトラブルシューティング手法
+
+## 次のステップ
+- BGPの導入によるインターネット接続の冗長化
+- MPLS VPNサービスへの移行検討
+- IPv6アドレス設計と移行計画
+- SD-WANソリューションの評価
+- ネットワークパフォーマンスモニタリングの強化
 
 ## 参考リソース
-- Cisco公式ドキュメント
-- IPルーティングに関する書籍
-- オンライン学習リソース
-
-## 学習の進捗
-- [ ] ルーティングの基礎の理解
-- [ ] IPアドレッシングとサブネット化の理解
-- [ ] 静的ルーティングの理解と設定
-- [ ] 動的ルーティングプロトコルの概要の理解
-- [ ] OSPFの理解と設定
-- [ ] EIGRPの理解と設定
-- [ ] ルートの再配布と集約の理解
-- [ ] 実践演習の完了
+- [OSPF Design Guide](https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/7039-1.html) - Cisco公式ドキュメント
+- [IP Addressing: IPv4 Addressing Configuration Guide](https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_ipv4/configuration/15-mt/ipv4-15-mt-book.html) - Cisco公式ガイド
+- [Routing TCP/IP, Volume 1](https://www.ciscopress.com/store/routing-tcp-ip-volume-1-9781587052026) by Jeff Doyle & Jennifer DeHaven Carroll
+- [CCNA 200-301 Official Cert Guide, Volume 1](https://www.ciscopress.com/store/ccna-200-301-official-cert-guide-volume-1-9780135792735) by Wendell Odom
+- [Optimal Routing Design](https://www.ciscopress.com/store/optimal-routing-design-9781587142246) by Russ White, Alvaro Retana & Don Slice
+- [Cisco Live: Advanced OSPF Deployment Considerations](https://www.ciscolive.com/c/dam/r/ciscolive/us/docs/2018/pdf/BRKRST-3310.pdf) - Cisco Liveセッション資料

@@ -1,163 +1,172 @@
-# セキュリティ基礎
+# セキュアネットワーク構築プロジェクト
 
-## 概要
-ネットワークセキュリティは、現代のネットワーク設計と運用において不可欠な要素です。このセクションでは、ネットワークセキュリティの基本概念、アクセスコントロール、認証メカニズム、暗号化、および一般的な脅威と対策について学びます。
+## プロジェクト概要
+金融関連サービスを提供する企業向けに、セキュリティを強化したネットワークインフラを設計・構築するプロジェクトです。このプロジェクトでは、アクセスコントロール、認証・認可・アカウンティング（AAA）、暗号化、脅威防御など、ネットワークセキュリティの基本要素を実装し、データと通信の機密性、完全性、可用性を確保します。
 
-## 学習トピック
+## ビジネス要件
 
-### 1. ネットワークセキュリティの基本概念
-- **セキュリティの三要素（CIA）**
-  - 機密性（Confidentiality）
-  - 完全性（Integrity）
-  - 可用性（Availability）
-- **セキュリティポリシー**
-- **防御の多層化（Defense in Depth）**
-- **最小権限の原則**
-- **リスク評価と管理**
+### クライアント情報
+- **会社名**: フィンテックソリューション株式会社
+- **業種**: 金融サービス
+- **従業員数**: 120名
+- **取り扱いデータ**: 顧客金融情報、取引データ（機密性の高い情報）
+- **コンプライアンス要件**: PCI DSS、FISC安全対策基準
 
-### 2. アクセスコントロールリスト（ACL）
-- **ACLの概要と目的**
-  - トラフィックフィルタリング
-  - QoSマーキング
-  - NAT
-- **ACLの種類**
-  - 標準ACL
-  - 拡張ACL
-  - 名前付きACL
+### 要件
+1. 境界セキュリティの強化
+2. 内部ネットワークのセグメンテーション
+3. アクセス制御の厳格化
+4. 認証システムの強化
+5. 通信の暗号化
+6. 脅威検出と防御の実装
+7. ログ記録と監査の強化
+8. リモートアクセスのセキュリティ確保
+
+## 技術要件
+
+### ネットワーク機器
+- 境界ファイアウォール: Cisco ASA 5525-X with FirePOWER x2
+- 内部ファイアウォール: Cisco ASA 5516-X x2
+- コアスイッチ: Cisco Catalyst 3850シリーズ x2
+- アクセススイッチ: Cisco Catalyst 2960シリーズ x8
+- VPNコンセントレータ: Cisco ASA 5525-X x2
+- AAAサーバー: Cisco ISE（Identity Services Engine）
+- 無線LANコントローラ: Cisco 3504 Wireless Controller x1
+- 無線LANアクセスポイント: Cisco Aironet 2800シリーズ x10
+
+### セキュリティ設計
+- **境界セキュリティ**:
+  - ファイアウォールクラスタリング
+  - DMZ（非武装地帯）の設計
+  - IPS/IDSの実装
+  - アプリケーションレイヤフィルタリング
+
+- **アクセスコントロール**:
+  - 標準ACL、拡張ACL、名前付きACL
+  - VLANアクセスマップ
+  - インフラストラクチャACL
   - 時間ベースACL
-- **ACLの動作**
-  - 上から下への評価
-  - 暗黙の拒否
-  - インバウンドとアウトバウンド
-- **ACLの設計と実装**
-  - 配置場所の考慮
-  - 効率的なACLの作成
-- **ACLの設定**
-  - 標準ACLの設定
-  - 拡張ACLの設定
-  - 名前付きACLの設定
-  - インターフェースへの適用
-- **ACLの確認とトラブルシューティング**
-- **IPv6 ACL**
 
-### 3. スイッチセキュリティ
-- **ポートセキュリティ**
-  - MACアドレスの制限
-  - 違反モード（protect、restrict、shutdown）
-  - スティッキーMACアドレス
-- **DHCP Snooping**
-  - 信頼できるポートと信頼できないポート
-  - DHCPサーバーの偽装防止
-- **ダイナミックARP検査（DAI）**
-  - ARPスプーフィング攻撃の防止
-  - ARP検査の設定
-- **IPソースガード**
-  - IPスプーフィング攻撃の防止
-  - IPソースガードの設定
-- **ストームコントロール**
-  - ブロードキャストストーム
-  - マルチキャストストーム
-  - ユニキャストストーム
-- **STPセキュリティ**
-  - BPDUガード
-  - ルートガード
-  - ループガード
+- **認証・認可・アカウンティング（AAA）**:
+  - Cisco ISEによる中央集中型認証
+  - 802.1X認証
+  - MAB（MAC Authentication Bypass）
+  - TACACS+によるデバイス管理
+  - RADIUSによるユーザー認証
 
-### 4. 認証、認可、アカウンティング（AAA）
-- **AAAの概念**
-  - 認証（Authentication）：ユーザーの身元確認
-  - 認可（Authorization）：ユーザーの権限確認
-  - アカウンティング（Accounting）：ユーザーの活動記録
-- **ローカル認証**
-- **RADIUS**
-  - RADIUSの概要と特徴
-  - RADIUSの設定
-- **TACACS+**
-  - TACACS+の概要と特徴
-  - TACACS+の設定
-- **802.1X**
-  - ポートベースの認証
-  - EAP（Extensible Authentication Protocol）
-  - 802.1Xの設定
+- **スイッチセキュリティ**:
+  - ポートセキュリティ
+  - DHCP Snooping
+  - ダイナミックARP検査
+  - IPソースガード
+  - ストームコントロール
 
-### 5. 無線LANセキュリティ
-- **無線LANの脆弱性**
-- **認証と暗号化**
-  - オープン認証
-  - WEP（Wired Equivalent Privacy）※レガシー
-  - WPA（Wi-Fi Protected Access）
-  - WPA2（Wi-Fi Protected Access 2）
-  - WPA3（Wi-Fi Protected Access 3）
-- **エンタープライズ無線LANセキュリティ**
-  - 802.1X/EAP
-  - RADIUS統合
-- **ゲストアクセス**
-- **無線LANセキュリティの設定**
+- **無線LANセキュリティ**:
+  - WPA2/WPA3 Enterprise
+  - 802.1X/EAP認証
+  - ゲストWLANの分離
+  - ワイヤレスIPS
 
-### 6. VPN（Virtual Private Network）
-- **VPNの概要と種類**
-  - サイト間VPN
-  - リモートアクセスVPN
-- **VPNプロトコル**
-  - IPsec
-  - SSL/TLS
-  - L2TP
-  - PPTP（レガシー）
-- **IPsec VPN**
-  - IKE（Internet Key Exchange）
-  - 認証と暗号化
-  - トンネルモードとトランスポートモード
-- **SSL VPN**
-  - クライアントレスとクライアントベース
-  - AnyConnect
+- **VPN**:
+  - サイト間IPsec VPN
+  - リモートアクセスSSL VPN
+  - AnyConnectセキュアモビリティ
 
-### 7. 一般的なネットワーク攻撃と対策
-- **偵察攻撃**
-  - ポートスキャン
-  - パケットスニッフィング
-- **アクセス攻撃**
-  - パスワードクラッキング
-  - 権限昇格
-- **DoS（Denial of Service）攻撃**
-  - フラッディング
-  - SYN攻撃
-  - Smurf攻撃
-- **DDoS（Distributed Denial of Service）攻撃**
-- **中間者攻撃（Man-in-the-Middle）**
-  - ARPスプーフィング
-  - DNSスプーフィング
-- **マルウェア**
-  - ウイルス
-  - ワーム
-  - トロイの木馬
-  - ランサムウェア
-- **フィッシング**
-- **対策技術**
-  - ファイアウォール
-  - IPS/IDS
-  - アンチマルウェア
-  - セキュリティ意識向上トレーニング
+## プロジェクト成果物
 
-## 実践演習
-1. **Packet Tracerを使用したACLの設定と検証**
-2. **ポートセキュリティの設定と検証**
-3. **DHCP Snoopingの設定と検証**
-4. **ローカルAAAの設定**
-5. **無線LANセキュリティの設定**
-6. **基本的なVPN設定**
+### 1. セキュリティ設計図
+- [ネットワークセキュリティアーキテクチャ図](./design/security_architecture.png)
+- [境界防御設計図](./design/perimeter_defense.png)
+- [セグメンテーション設計図](./design/segmentation.png)
+- [認証フロー設計図](./design/authentication_flow.png)
+- [VPN設計図](./design/vpn_design.png)
+
+### 2. 機器設定
+- [境界ファイアウォール設定](./configs/perimeter_firewall_config.txt)
+- [内部ファイアウォール設定](./configs/internal_firewall_config.txt)
+- [ACL設定](./configs/acl_config.txt)
+- [AAA設定](./configs/aaa_config.txt)
+- [スイッチセキュリティ設定](./configs/switch_security_config.txt)
+- [無線LANセキュリティ設定](./configs/wlan_security_config.txt)
+- [VPN設定](./configs/vpn_config.txt)
+
+### 3. 実装手順
+- [ファイアウォール実装手順](./implementation/firewall_implementation.md)
+- [ACL実装手順](./implementation/acl_implementation.md)
+- [AAA実装手順](./implementation/aaa_implementation.md)
+- [802.1X実装手順](./implementation/802.1x_implementation.md)
+- [スイッチセキュリティ実装手順](./implementation/switch_security_implementation.md)
+- [無線LANセキュリティ実装手順](./implementation/wlan_security_implementation.md)
+- [VPN実装手順](./implementation/vpn_implementation.md)
+
+### 4. 検証結果
+- [ファイアウォールポリシー検証](./verification/firewall_policy_verification.md)
+- [ACL機能検証](./verification/acl_verification.md)
+- [認証システム検証](./verification/authentication_verification.md)
+- [スイッチセキュリティ機能検証](./verification/switch_security_verification.md)
+- [無線LANセキュリティ検証](./verification/wlan_security_verification.md)
+- [VPN機能検証](./verification/vpn_verification.md)
+- [侵入テスト結果](./verification/penetration_test_results.md)
+
+### 5. セキュリティ監査とコンプライアンス
+- [セキュリティ監査レポート](./audit/security_audit_report.md)
+- [PCI DSS準拠性評価](./audit/pci_dss_compliance.md)
+- [FISC安全対策基準準拠性評価](./audit/fisc_compliance.md)
+- [セキュリティポリシー文書](./audit/security_policy.md)
+
+### 6. トラブルシューティング事例
+- [ファイアウォール接続問題の解決](./troubleshooting/firewall_connectivity_issues.md)
+- [認証失敗問題の解決](./troubleshooting/authentication_failures.md)
+- [ACLトラブルシューティング](./troubleshooting/acl_troubleshooting.md)
+- [VPN接続問題の解決](./troubleshooting/vpn_connectivity_issues.md)
+
+## 実装のポイント
+
+### 1. 多層防御（Defense in Depth）アプローチ
+- 単一の防御層に依存せず、複数の防御層を実装
+- 各層で異なるセキュリティコントロールを適用
+- 一つの層が突破されても、他の層で防御できる構造
+
+### 2. 最小権限の原則
+- 必要最小限のアクセス権限のみを付与
+- デフォルトで「拒否」し、必要なアクセスのみを「許可」
+- 役割ベースのアクセス制御の実装
+
+### 3. セグメンテーションの効果的な実装
+- 機能、セキュリティレベル、データ分類に基づくセグメント化
+- マイクロセグメンテーションによる横方向の移動の制限
+- セグメント間の通信制御
+
+### 4. 認証と暗号化の適切な組み合わせ
+- 多要素認証の実装
+- 強力な暗号化アルゴリズムの選択
+- 証明書ベースの認証の活用
+
+### 5. 継続的なモニタリングと対応
+- セキュリティイベントのリアルタイム監視
+- ログの集中管理と分析
+- インシデント対応プロセスの確立
+
+## 学んだこと
+- セキュリティはテクノロジーだけでなく、プロセスと人の要素も重要
+- コンプライアンス要件とセキュリティのバランス
+- 使いやすさとセキュリティのトレードオフ
+- 階層的なセキュリティアプローチの効果
+- セキュリティ設計における文書化の重要性
+
+## 次のステップ
+- セキュリティ運用センター（SOC）の構築
+- 高度な脅威検出と対応（EDR）の導入
+- ゼロトラストアーキテクチャへの移行
+- セキュリティ自動化の拡張
+- クラウドセキュリティの強化
 
 ## 参考リソース
-- Cisco公式ドキュメント
-- ネットワークセキュリティに関する書籍
-- オンライン学習リソース
-- NIST（National Institute of Standards and Technology）セキュリティガイドライン
-
-## 学習の進捗
-- [ ] ネットワークセキュリティの基本概念の理解
-- [ ] ACLの理解と設定
-- [ ] スイッチセキュリティ機能の理解と設定
-- [ ] AAAの理解と基本設定
-- [ ] 無線LANセキュリティの理解
-- [ ] VPNの基本概念の理解
-- [ ] 一般的なネットワーク攻撃と対策の理解
-- [ ] 実践演習の完了
+- [Cisco Network Security Fundamentals](https://www.cisco.com/c/en/us/td/docs/solutions/Enterprise/Security/SAFE_RG/SAFE_rg.html) - Cisco SAFE リファレンスガイド
+- [Cisco Identity Services Engine Administrator Guide](https://www.cisco.com/c/en/us/td/docs/security/ise/3-0/admin_guide/b_ISE_admin_3_0.html)
+- [Cisco ASA Series Firewall CLI Configuration Guide](https://www.cisco.com/c/en/us/td/docs/security/asa/asa-cli-reference/I-R/asa-command-ref-I-R.html)
+- [PCI DSS Requirements and Security Assessment Procedures](https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf)
+- [Network Security Assessment: Know Your Network](https://www.oreilly.com/library/view/network-security-assessment/9781491911044/) by Chris McNab
+- [CCNA Security 210-260 Official Cert Guide](https://www.ciscopress.com/store/ccna-security-210-260-official-cert-guide-9781587205668) by Omar Santos & John Stuppi
+- [Cisco Next-Generation Security Solutions](https://www.ciscopress.com/store/cisco-next-generation-security-solutions-9781587144462) by Omar Santos, et al.
+- [Practical Cisco Networking for Security Professionals](https://www.ciscopress.com/store/practical-cisco-networking-for-security-professionals-9780135956175) by Aamir Lakhani & Joseph Muniz

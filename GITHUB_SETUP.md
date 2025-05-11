@@ -44,7 +44,7 @@ GitHubで作成したリポジトリのURLを使用して、以下のコマン�
 
 ```bash
 # リモートリポジトリを追加（URLは自分のGitHubリポジトリのURLに置き換えてください）
-git remote add origin https://github.com/yourusername/CCNA-Portfolio.git
+git remote add origin https://github.com/Seki-C/CCNA-Portfolio.git
 
 # ローカルリポジトリをGitHubにプッシュ
 git push -u origin main
