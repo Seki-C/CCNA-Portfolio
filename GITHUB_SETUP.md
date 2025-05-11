@@ -88,6 +88,84 @@ GitHubでポートフォリオをウェブサイトとして公開したい場�
 - [GitHub Pages](https://pages.github.com/)
 - [Markdown記法](https://docs.github.com/ja/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
 
+## GitHubとのSSH接続設定（推奨）
+
+HTTPSではなくSSH接続を使用すると、パスワード入力が不要になり、より安全に操作できます。
+
+### 1. SSHキーペアの生成
+
+1. コマンドプロンプトまたはPowerShellを開きます
+2. 以下のコマンドを実行します（メールアドレスは自分のGitHubアカウントのメールアドレスに置き換えてください）：
+   ```bash
+   ssh-keygen -t ed25519 -C "your_email@example.com"
+   ```
+3. キーの保存場所を尋ねられたら、デフォルトの場所（通常は`C:\Users\<ユーザー名>\.ssh\id_ed25519`）でEnterキーを押します
+4. パスフレーズの入力を求められたら、セキュリティを高めるためにパスフレーズを設定することをお勧めします（または空のままEnterキーを押すこともできます）
+
+### 2. SSHキーをSSHエージェントに追加
+
+1. SSHエージェントを起動します：
+   ```bash
+   # PowerShellの場合
+   Get-Service -Name ssh-agent | Set-Service -StartupType Automatic
+   Start-Service ssh-agent
+   
+   # コマンドプロンプトの場合
+   start-ssh-agent.cmd
+   ```
+
+2. 生成した秘密鍵をSSHエージェントに追加します：
+   ```bash
+   ssh-add ~/.ssh/id_ed25519
+   ```
+
+### 3. 公開鍵をGitHubアカウントに追加
+
+1. 公開鍵をクリップボードにコピーします：
+   ```bash
+   # PowerShellの場合
+   Get-Content ~/.ssh/id_ed25519.pub | clip
+   
+   # コマンドプロンプトの場合
+   type %userprofile%\.ssh\id_ed25519.pub | clip
+   ```
+
+2. GitHubにログインし、右上のプロフィールアイコンをクリックして「Settings」を選択します
+3. 左側のサイドバーで「SSH and GPG keys」をクリックします
+4. 「New SSH key」または「Add SSH key」ボタンをクリックします
+5. 「Title」フィールドに、このキーを識別するための名前（例：「Work Laptop」）を入力します
+6. 「Key」フィールドに、クリップボードにコピーした公開鍵を貼り付けます
+7. 「Add SSH key」ボタンをクリックして保存します
+
+### 4. SSH接続のテスト
+
+以下のコマンドを実行して、GitHubとのSSH接続をテストします：
+```bash
+ssh -T git@github.com
+```
+
+初回接続時は、サーバーの認証確認が表示されます。「yes」と入力してEnterキーを押します。
+成功すると、「Hi username! You've successfully authenticated, but GitHub does not provide shell access.」というメッセージが表示されます。
+
+### 5. リモートリポジトリのURLをSSH形式に変更（既存のリポジトリの場合）
+
+既にHTTPSでリモートリポジトリを設定している場合は、以下のコマンドでSSH形式に変更できます：
+
+```bash
+# 現在のリモートURLを確認
+git remote -v
+
+# リモートURLをSSH形式に変更（ユーザー名は自分のGitHubユーザー名に置き換えてください）
+git remote set-url origin git@github.com:ユーザー名/CCNA-Portfolio.git
+```
+
+### 6. 新しいリポジトリをSSHで接続する場合
+
+新しいリポジトリをクローンする場合は、HTTPSのURLではなくSSHのURLを使用します：
+```bash
+git clone git@github.com:ユーザー名/リポジトリ名.git
+```
+
 ---
 
 このポートフォリオをGitHubで公開することで、以下のメリットがあります：
